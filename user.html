@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>URUzone Beta — User Session Evaluation</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="page page-user">
+  <main class="page-shell">
+    <section class="app-card">
+      <header class="page-header">
+        <p class="eyebrow">URUzone Beta</p>
+        <h1>Session Evaluation</h1>
+        <p class="intro">
+          Complete this privately after the session. Your input helps us understand
+          how clearly the system reflected your performance.
+        </p>
+      </header>
+
+      <form id="userForm" novalidate>
+        <!-- 1. Session context -->
+        <section class="section">
+          <div class="section-heading">
+            <h2>Session context</h2>
+            <p>Basic information for this completed session.</p>
+          </div>
+
+          <div class="form-grid form-grid-2">
+            <div class="field">
+              <label for="trainerId">Trainer ID</label>
+              <input id="trainerId" name="trainerId" type="text" placeholder="e.g. TR-01" />
+            </div>
+
+            <div class="field">
+              <label for="userId">User ID</label>
+              <input id="userId" name="userId" type="text" placeholder="e.g. US-12" />
+            </div>
+
+            <div class="field">
+              <label for="reviewDate">Date</label>
+              <input id="reviewDate" name="reviewDate" type="date" />
+            </div>
+
+            <div class="field">
+              <label for="primaryDeviceId">Primary device</label>
+              <input id="primaryDeviceId" name="primaryDeviceId" type="text" placeholder="e.g. DEV-03" />
+            </div>
+
+            <div class="field">
+              <label for="setsInSession">Sets in session</label>
+              <input id="setsInSession" name="setsInSession" type="number" min="1" step="1" placeholder="e.g. 6" />
+            </div>
+          </div>
+        </section>
+
+        <!-- 2. Core evaluation -->
+        <section class="section">
+          <div class="section-heading">
+            <h2>How the session felt</h2>
+            <p>Rate how accurately and naturally the system fit into your training.</p>
+          </div>
+
+          <div class="question-list">
+            <article class="question-card">
+              <div class="question-head">
+                <h3>Q1. Reflection accuracy</h3>
+                <span class="selected-value">1–5</span>
+              </div>
+
+              <p class="question-text">
+                Did the feedback reflect how you actually performed?
+              </p>
+
+              <div class="scale-group">
+                <label class="scale-option"><input type="radio" name="q1ReflectionAccuracy" value="1" /> <span>1</span></label>
+                <label class="scale-option"><input type="radio" name="q1ReflectionAccuracy" value="2" /> <span>2</span></label>
+                <label class="scale-option"><input type="radio" name="q1ReflectionAccuracy" value="3" /> <span>3</span></label>
+                <label class="scale-option"><input type="radio" name="q1ReflectionAccuracy" value="4" /> <span>4</span></label>
+                <label class="scale-option"><input type="radio" name="q1ReflectionAccuracy" value="5" /> <span>5</span></label>
+              </div>
+
+              <div class="scale-labels">
+                <span>Not at all</span>
+                <span>Partly</span>
+                <span>Very clearly</span>
+              </div>
+            </article>
+
+            <article class="question-card">
+              <div class="question-head">
+                <h3>Q2. Trust</h3>
+                <span class="selected-value">1–5</span>
+              </div>
+
+              <p class="question-text">
+                Did you trust this as an accurate measure of your movement?
+              </p>
+
+              <div class="scale-group">
+                <label class="scale-option"><input type="radio" name="q2Trust" value="1" /> <span>1</span></label>
+                <label class="scale-option"><input type="radio" name="q2Trust" value="2" /> <span>2</span></label>
+                <label class="scale-option"><input type="radio" name="q2Trust" value="3" /> <span>3</span></label>
+                <label class="scale-option"><input type="radio" name="q2Trust" value="4" /> <span>4</span></label>
+                <label class="scale-option"><input type="radio" name="q2Trust" value="5" /> <span>5</span></label>
+              </div>
+
+              <div class="scale-labels">
+                <span>Did not trust it</span>
+                <span>Unsure</span>
+                <span>Trusted it</span>
+              </div>
+            </article>
+
+            <article class="question-card">
+              <div class="question-head">
+                <h3>Q3. Training impact</h3>
+                <span class="selected-value">1–5</span>
+              </div>
+
+              <p class="question-text">
+                Would you use this to guide how you train?
+              </p>
+
+              <div class="scale-group">
+                <label class="scale-option"><input type="radio" name="q3TrainingImpact" value="1" /> <span>1</span></label>
+                <label class="scale-option"><input type="radio" name="q3TrainingImpact" value="2" /> <span>2</span></label>
+                <label class="scale-option"><input type="radio" name="q3TrainingImpact" value="3" /> <span>3</span></label>
+                <label class="scale-option"><input type="radio" name="q3TrainingImpact" value="4" /> <span>4</span></label>
+                <label class="scale-option"><input type="radio" name="q3TrainingImpact" value="5" /> <span>5</span></label>
+              </div>
+
+              <div class="scale-labels">
+                <span>Would not use it</span>
+                <span>Maybe</span>
+                <span>Would use it</span>
+              </div>
+            </article>
+
+            <article class="question-card">
+              <div class="question-head">
+                <h3>Q4. Integration</h3>
+                <span class="selected-value">1–5</span>
+              </div>
+
+              <p class="question-text">
+                Did this fit naturally into your training session?
+              </p>
+
+              <div class="scale-group">
+                <label class="scale-option"><input type="radio" name="q4Integration" value="1" /> <span>1</span></label>
+                <label class="scale-option"><input type="radio" name="q4Integration" value="2" /> <span>2</span></label>
+                <label class="scale-option"><input type="radio" name="q4Integration" value="3" /> <span>3</span></label>
+                <label class="scale-option"><input type="radio" name="q4Integration" value="4" /> <span>4</span></label>
+                <label class="scale-option"><input type="radio" name="q4Integration" value="5" /> <span>5</span></label>
+              </div>
+
+              <div class="scale-labels">
+                <span>Clunky</span>
+                <span>Mixed</span>
+                <span>Very natural</span>
+              </div>
+            </article>
+
+            <article class="question-card">
+              <div class="question-head">
+                <h3>Q5. Awareness</h3>
+                <span class="selected-value">1–5</span>
+              </div>
+
+              <p class="question-text">
+                Did this make you more aware of how you were moving?
+              </p>
+
+              <div class="scale-group">
+                <label class="scale-option"><input type="radio" name="q5Awareness" value="1" /> <span>1</span></label>
+                <label class="scale-option"><input type="radio" name="q5Awareness" value="2" /> <span>2</span></label>
+                <label class="scale-option"><input type="radio" name="q5Awareness" value="3" /> <span>3</span></label>
+                <label class="scale-option"><input type="radio" name="q5Awareness" value="4" /> <span>4</span></label>
+                <label class="scale-option"><input type="radio" name="q5Awareness" value="5" /> <span>5</span></label>
+              </div>
+
+              <div class="scale-labels">
+                <span>Not at all</span>
+                <span>Somewhat</span>
+                <span>Much more aware</span>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <!-- 3. Session value -->
+        <section class="section">
+          <div class="section-heading">
+            <h2>Session value</h2>
+            <p>Rate the overall value of this session and whether you would use this again.</p>
+          </div>
+
+          <div class="question-list">
+            <article class="question-card">
+              <div class="question-head">
+                <h3>Overall session value</h3>
+                <span class="selected-value">1–5</span>
+              </div>
+
+              <p class="question-text">
+                How valuable was this session overall?
+              </p>
+
+              <div class="scale-group">
+                <label class="scale-option"><input type="radio" name="overallSessionValue" value="1" /> <span>1</span></label>
+                <label class="scale-option"><input type="radio" name="overallSessionValue" value="2" /> <span>2</span></label>
+                <label class="scale-option"><input type="radio" name="overallSessionValue" value="3" /> <span>3</span></label>
+                <label class="scale-option"><input type="radio" name="overallSessionValue" value="4" /> <span>4</span></label>
+                <label class="scale-option"><input type="radio" name="overallSessionValue" value="5" /> <span>5</span></label>
+              </div>
+
+              <div class="scale-labels">
+                <span>Low</span>
+                <span>Moderate</span>
+                <span>High</span>
+              </div>
+            </article>
+
+            <article class="question-card">
+              <div class="question-head">
+                <h3>Would use again</h3>
+                <span class="selected-value">1–5</span>
+              </div>
+
+              <p class="question-text">
+                Would you train with this again?
+              </p>
+
+              <div class="scale-group">
+                <label class="scale-option"><input type="radio" name="wouldUseAgain" value="1" /> <span>1</span></label>
+                <label class="scale-option"><input type="radio" name="wouldUseAgain" value="2" /> <span>2</span></label>
+                <label class="scale-option"><input type="radio" name="wouldUseAgain" value="3" /> <span>3</span></label>
+                <label class="scale-option"><input type="radio" name="wouldUseAgain" value="4" /> <span>4</span></label>
+                <label class="scale-option"><input type="radio" name="wouldUseAgain" value="5" /> <span>5</span></label>
+              </div>
+
+              <div class="scale-labels">
+                <span>Definitely not</span>
+                <span>Maybe</span>
+                <span>Definitely yes</span>
+              </div>
+            </article>
+
+            <article class="question-card">
+              <div class="question-head">
+                <h3>Confidence to apply again</h3>
+                <span class="selected-value">1–5</span>
+              </div>
+
+              <p class="question-text">
+                How confident are you that you could apply this again?
+              </p>
+
+              <div class="scale-group">
+                <label class="scale-option"><input type="radio" name="confidenceToApplyAgain" value="1" /> <span>1</span></label>
+                <label class="scale-option"><input type="radio" name="confidenceToApplyAgain" value="2" /> <span>2</span></label>
+                <label class="scale-option"><input type="radio" name="confidenceToApplyAgain" value="3" /> <span>3</span></label>
+                <label class="scale-option"><input type="radio" name="confidenceToApplyAgain" value="4" /> <span>4</span></label>
+                <label class="scale-option"><input type="radio" name="confidenceToApplyAgain" value="5" /> <span>5</span></label>
+              </div>
+
+              <div class="scale-labels">
+                <span>Not confident</span>
+                <span>Somewhat</span>
+                <span>Very confident</span>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <!-- 4. Additional context -->
+        <section class="section">
+          <div class="section-heading">
+            <h2>Additional context</h2>
+            <p>Optional details that help explain the session ratings.</p>
+          </div>
+
+          <div class="form-grid form-grid-1">
+            <div class="field">
+              <label for="biggestFriction">Biggest friction</label>
+              <textarea
+                id="biggestFriction"
+                name="biggestFriction"
+                rows="4"
+                placeholder="What felt clunky, unclear, or hard to use?"
+              ></textarea>
+            </div>
+
+            <div class="field">
+              <label for="mostUsefulFeedback">Most useful feedback</label>
+              <textarea
+                id="mostUsefulFeedback"
+                name="mostUsefulFeedback"
+                rows="4"
+                placeholder="What signal, cue, or insight helped most?"
+              ></textarea>
+            </div>
+
+            <div class="field">
+              <label for="sessionNotes">Session notes</label>
+              <textarea
+                id="sessionNotes"
+                name="sessionNotes"
+                rows="4"
+                placeholder="Anything else you want to add?"
+              ></textarea>
+            </div>
+          </div>
+        </section>
+
+        <!-- 5. Summary -->
+        <section class="section">
+          <div class="section-heading">
+            <h2>Session summary</h2>
+            <p>Live helper summary for this completed review.</p>
+          </div>
+
+          <div class="summary-grid">
+            <article class="summary-card">
+              <span class="summary-label">Immediate perceived score</span>
+              <strong>—</strong>
+              <small>Average of the five core experience questions</small>
+            </article>
+
+            <article class="summary-card">
+              <span class="summary-label">Session value score</span>
+              <strong>—</strong>
+              <small>Average of value, reuse intent, and confidence</small>
+            </article>
+          </div>
+        </section>
+
+        <!-- 6. Privacy confirmation -->
+        <section class="section">
+          <div class="section-heading">
+            <h2>Privacy confirmation</h2>
+            <p>This review should be completed privately by the user.</p>
+          </div>
+
+          <label class="checkbox-row">
+            <input id="privateReview" name="privateReview" type="checkbox" />
+            <span>I completed this review privately.</span>
+          </label>
+        </section>
+
+        <!-- 7. Actions -->
+        <section class="section action-row">
+          <button type="submit" class="primary-btn">Record session</button>
+          <button type="button" class="secondary-btn">Save draft</button>
+          <button type="reset" class="ghost-btn">Reset</button>
+        </section>
+      </form>
+    </section>
+  </main>
+
+  <script src="user.js"></script>
+</body>
+</html>

@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>URUzone Beta — Scoreboard</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="page page-scoreboard">
+  <main class="page-shell">
+    <section class="app-card">
+      <header class="page-header">
+        <p class="eyebrow">URUzone Beta</p>
+        <h1>Beta Scoreboard</h1>
+        <p class="intro">
+          Review operational, perception, and validation metrics across trainers,
+          users, devices, and exercises.
+        </p>
+      </header>
+
+      <!-- 1. Filters -->
+      <section class="section">
+        <div class="section-heading">
+          <h2>Filters</h2>
+          <p>Adjust the view to compare performance across the beta.</p>
+        </div>
+
+        <div class="form-grid form-grid-2">
+          <div class="field">
+            <label for="dateRange">Date range</label>
+            <input id="dateRange" name="dateRange" type="text" placeholder="e.g. Jan 1 — Jan 31" />
+          </div>
+
+          <div class="field">
+            <label for="trainerFilter">Trainer</label>
+            <input id="trainerFilter" name="trainerFilter" type="text" placeholder="All trainers" />
+          </div>
+
+          <div class="field">
+            <label for="userFilter">User / tester</label>
+            <input id="userFilter" name="userFilter" type="text" placeholder="All users" />
+          </div>
+
+          <div class="field">
+            <label for="deviceFilter">Device</label>
+            <input id="deviceFilter" name="deviceFilter" type="text" placeholder="All devices" />
+          </div>
+
+          <div class="field">
+            <label for="exerciseFilter">Exercise</label>
+            <input id="exerciseFilter" name="exerciseFilter" type="text" placeholder="All exercises" />
+          </div>
+        </div>
+      </section>
+
+      <!-- 2. KPI strip -->
+      <section class="section">
+        <div class="section-heading">
+          <h2>Headline metrics</h2>
+          <p>Top-level indicators for beta activity, quality, and value.</p>
+        </div>
+
+        <div class="summary-grid summary-grid-4">
+          <article class="summary-card">
+            <span class="summary-label">Trainers active</span>
+            <strong>—</strong>
+            <small>Unique trainers logging sets</small>
+          </article>
+
+          <article class="summary-card">
+            <span class="summary-label">Users tested</span>
+            <strong>—</strong>
+            <small>Unique users in completed sessions</small>
+          </article>
+
+          <article class="summary-card">
+            <span class="summary-label">Devices used</span>
+            <strong>—</strong>
+            <small>Unique devices recorded</small>
+          </article>
+
+          <article class="summary-card">
+            <span class="summary-label">Total analyzed sets</span>
+            <strong>—</strong>
+            <small>All logged trainer set rows</small>
+          </article>
+        </div>
+      </section>
+
+      <!-- 3. Core metrics -->
+      <section class="section">
+        <div class="section-heading">
+          <h2>Core metrics</h2>
+          <p>Operational quality and coaching usefulness across the beta.</p>
+        </div>
+
+        <div class="summary-grid summary-grid-3">
+          <article class="summary-card">
+            <span class="summary-label">Successful session rate</span>
+            <strong>—</strong>
+            <small>Setup successful × data captured</small>
+          </article>
+
+          <article class="summary-card">
+            <span class="summary-label">Technical issue rate</span>
+            <strong>—</strong>
+            <small>Sets affected by technical issues</small>
+          </article>
+
+          <article class="summary-card">
+            <span class="summary-label">Q6 helps coaching avg</span>
+            <strong>—</strong>
+            <small>Average coaching value from trainer logging</small>
+          </article>
+
+          <article class="summary-card">
+            <span class="summary-label">% revealed something new</span>
+            <strong>—</strong>
+            <small>Sets where the system surfaced new insight</small>
+          </article>
+
+          <article class="summary-card">
+            <span class="summary-label">% behavior change</span>
+            <strong>—</strong>
+            <small>Sets where feedback changed the next decision</small>
+          </article>
+        </div>
+      </section>
+
+      <!-- 4. User perception metrics -->
+      <section class="section">
+        <div class="section-heading">
+          <h2>User perception metrics</h2>
+          <p>Private end-of-session ratings across the five user questions.</p>
+        </div>
+
+        <div class="summary-grid summary-grid-5">
+          <article class="summary-card">
+            <span class="summary-label">Q1 average</span>
+            <strong>—</strong>
+            <small>Feedback made sense</small>
+          </article>
+
+          <article class="summary-card">
+            <span class="summary-label">Q2 average</span>
+            <strong>—</strong>
+            <small>Believable</small>
+          </article>
+
+          <article class="summary-card">
+            <span class="summary-label">Q3 average</span>
+            <strong>—</strong>
+            <small>Would help training</small>
+          </article>
+
+          <article class="summary-card">
+            <span class="summary-label">Q4 average</span>
+            <strong>—</strong>
+            <small>Frictionless to train with</small>
+          </article>
+
+          <article class="summary-card">
+            <span class="summary-label">Q5 average</span>
+            <strong>—</strong>
+            <small>Fun / motivational</small>
+          </article>
+        </div>
+      </section>
+
+      <!-- 5. Bias-controlled beta metrics -->
+      <section class="section">
+        <div class="section-heading">
+          <h2>Bias-controlled beta metrics</h2>
+          <p>Metrics that connect trainer-side data and private user-side review.</p>
+        </div>
+
+        <div class="summary-grid summary-grid-3">
+          <article class="summary-card">
+            <span class="summary-label">Session reviews logged</span>
+            <strong>—</strong>
+            <small>Completed private session reviews</small>
+          </article>
+
+          <article class="summary-card">
+            <span class="summary-label">Immediate perceived score</span>
+            <strong>—</strong>
+            <small>Average of Q1–Q5</small>
+          </article>
+
+          <article class="summary-card">
+            <span class="summary-label">Session value score</span>
+            <strong>—</strong>
+            <small>Average of value, reuse, and confidence</small>
+          </article>
+
+          <article class="summary-card">
+            <span class="summary-label">Observed change score</span>
+            <strong>—</strong>
+            <small>Average of confirmed, revealed, and changed decision</small>
+          </article>
+
+          <article class="summary-card">
+            <span class="summary-label">Private entry rate</span>
+            <strong>—</strong>
+            <small>Reviews completed privately</small>
+          </article>
+
+          <article class="summary-card">
+            <span class="summary-label">Next-set validation rate</span>
+            <strong>—</strong>
+            <small>Effect validated on the next set</small>
+          </article>
+        </div>
+      </section>
+
+      <!-- 6. Summary tabs / sections -->
+      <section class="section">
+        <div class="section-heading">
+          <h2>Dimension summaries</h2>
+          <p>Compare performance by trainer, user, device, and exercise.</p>
+        </div>
+
+        <div class="tab-row">
+          <button type="button" class="tab-btn active">Trainer summary</button>
+          <button type="button" class="tab-btn">User summary</button>
+          <button type="button" class="tab-btn">Device summary</button>
+          <button type="button" class="tab-btn">Exercise summary</button>
+        </div>
+
+        <div class="table-card top-gap">
+          <div class="table-placeholder">
+            <h3>Trainer summary</h3>
+            <p>
+              This area will show the selected summary view with rows for each trainer,
+              including sets logged, capture success, key averages, coaching value,
+              and behavior change.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 7. Insights / exceptions -->
+      <section class="section">
+        <div class="section-heading">
+          <h2>Insights and exceptions</h2>
+          <p>Use this section to surface patterns that need attention.</p>
+        </div>
+
+        <div class="card-grid card-grid-3">
+          <article class="option-card">
+            <h3>Low capture success</h3>
+            <p>Highlight devices, trainers, or exercises with weaker operational performance.</p>
+          </article>
+
+          <article class="option-card">
+            <h3>Low trust or clarity</h3>
+            <p>Highlight sessions or dimensions where user confidence is lower than expected.</p>
+          </article>
+
+          <article class="option-card">
+            <h3>High coaching value</h3>
+            <p>Highlight where the system is most clearly changing decisions and validating well.</p>
+          </article>
+        </div>
+      </section>
+
+      <!-- 8. Actions -->
+      <section class="section action-row">
+        <button type="button" class="primary-btn">Refresh scoreboard</button>
+        <button type="button" class="secondary-btn">Export</button>
+        <button type="button" class="ghost-btn">Reset filters</button>
+      </section>
+    </section>
+  </main>
+
+  <script src="scoreboard.js"></script>
+</body>
+</html>

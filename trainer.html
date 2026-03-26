@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>URUzone Beta — Trainer Set Analysis</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="page page-trainer">
+  <main class="page-shell">
+    <section class="app-card">
+      <header class="page-header">
+        <p class="eyebrow">URUzone Beta</p>
+        <h1>Trainer Set Analysis</h1>
+        <p class="intro">
+          Record the set outcome, coaching interpretation, and next-set validation.
+        </p>
+      </header>
+
+      <form id="trainerForm" novalidate>
+        <!-- 1. Set context -->
+        <section class="section">
+          <div class="section-heading">
+            <h2>Set context</h2>
+            <p>Basic information for the analyzed set.</p>
+          </div>
+
+          <div class="form-grid form-grid-2">
+            <div class="field">
+              <label for="trainerId">Trainer ID</label>
+              <input id="trainerId" name="trainerId" type="text" placeholder="e.g. TR-01" />
+            </div>
+
+            <div class="field">
+              <label for="userId">User ID</label>
+              <input id="userId" name="userId" type="text" placeholder="e.g. US-12" />
+            </div>
+
+            <div class="field">
+              <label for="sessionNumber">Session number</label>
+              <input id="sessionNumber" name="sessionNumber" type="number" min="1" step="1" placeholder="e.g. 3" />
+            </div>
+
+            <div class="field">
+              <label for="sessionDate">Date</label>
+              <input id="sessionDate" name="sessionDate" type="date" />
+            </div>
+
+            <div class="field">
+              <label for="deviceId">Device ID</label>
+              <input id="deviceId" name="deviceId" type="text" placeholder="e.g. DEV-03" />
+            </div>
+
+            <div class="field">
+              <label for="exercise">Exercise</label>
+              <input id="exercise" name="exercise" type="text" placeholder="e.g. Squat" />
+            </div>
+
+            <div class="field">
+              <label for="loadKg">Load (kg)</label>
+              <input id="loadKg" name="loadKg" type="number" min="0" step="1" placeholder="e.g. 80" />
+            </div>
+
+            <div class="field">
+              <label for="reps">Reps</label>
+              <input id="reps" name="reps" type="number" min="1" step="1" placeholder="e.g. 6" />
+            </div>
+          </div>
+        </section>
+
+        <!-- 2. Capture status -->
+        <section class="section">
+          <div class="section-heading">
+            <h2>Capture status</h2>
+            <p>Record whether the setup and capture worked for this set.</p>
+          </div>
+
+          <div class="card-grid card-grid-3">
+            <article class="option-card">
+              <h3>Setup successful</h3>
+              <p>Did setup work well enough to run the set?</p>
+              <div class="inline-options">
+                <label><input type="radio" name="setupSuccessful" value="1" /> Yes</label>
+                <label><input type="radio" name="setupSuccessful" value="0" /> No</label>
+              </div>
+            </article>
+
+            <article class="option-card">
+              <h3>Data captured</h3>
+              <p>Was usable set data captured?</p>
+              <div class="inline-options">
+                <label><input type="radio" name="dataCaptured" value="1" /> Yes</label>
+                <label><input type="radio" name="dataCaptured" value="0" /> No</label>
+              </div>
+            </article>
+
+            <article class="option-card">
+              <h3>Technical issue</h3>
+              <p>Did a hardware, software, or workflow issue affect the set?</p>
+              <div class="inline-options">
+                <label><input type="radio" name="technicalIssue" value="1" /> Yes</label>
+                <label><input type="radio" name="technicalIssue" value="0" /> No</label>
+              </div>
+            </article>
+          </div>
+
+          <div class="form-grid form-grid-1 top-gap">
+            <div class="field">
+              <label for="issueCategory">Issue category</label>
+              <input id="issueCategory" name="issueCategory" type="text" placeholder="e.g. hardware, algorithm output" />
+            </div>
+          </div>
+        </section>
+
+        <!-- 3. Coaching interpretation -->
+        <section class="section">
+          <div class="section-heading">
+            <h2>Coaching interpretation</h2>
+            <p>Record what the system meant in practice for the trainer.</p>
+          </div>
+
+          <div class="card-grid card-grid-3">
+            <article class="option-card">
+              <h3>Confirmed</h3>
+              <p>The system confirmed something I already saw.</p>
+              <label class="checkbox-row">
+                <input id="confirmedObservation" name="confirmedObservation" type="checkbox" />
+                <span>Confirmed coach observation</span>
+              </label>
+            </article>
+
+            <article class="option-card">
+              <h3>Revealed</h3>
+              <p>The system surfaced something I did not notice before.</p>
+              <label class="checkbox-row">
+                <input id="revealedSomethingNew" name="revealedSomethingNew" type="checkbox" />
+                <span>Revealed something new</span>
+              </label>
+            </article>
+
+            <article class="option-card">
+              <h3>Changed decision</h3>
+              <p>The feedback changed what I did next.</p>
+              <label class="checkbox-row">
+                <input id="behaviorChange" name="behaviorChange" type="checkbox" />
+                <span>Behavior changed</span>
+              </label>
+            </article>
+          </div>
+        </section>
+
+        <!-- 4. Decision change -->
+        <section class="section">
+          <div class="section-heading">
+            <h2>Decision change</h2>
+            <p>What changed because of the signal?</p>
+          </div>
+
+          <div class="chip-group">
+            <label class="chip-option">
+              <input type="checkbox" name="decisionChange" value="cue" />
+              <span>Cue</span>
+            </label>
+
+            <label class="chip-option">
+              <input type="checkbox" name="decisionChange" value="load" />
+              <span>Load</span>
+            </label>
+
+            <label class="chip-option">
+              <input type="checkbox" name="decisionChange" value="rest" />
+              <span>Rest</span>
+            </label>
+
+            <label class="chip-option">
+              <input type="checkbox" name="decisionChange" value="techniqueFocus" />
+              <span>Technique focus</span>
+            </label>
+
+            <label class="chip-option">
+              <input type="checkbox" name="decisionChange" value="exerciseChoice" />
+              <span>Exercise choice</span>
+            </label>
+
+            <label class="chip-option">
+              <input type="checkbox" name="decisionChange" value="noChange" />
+              <span>No change</span>
+            </label>
+          </div>
+        </section>
+
+        <!-- 5. Coaching value -->
+        <section class="section">
+          <div class="section-heading">
+            <h2>Coaching value</h2>
+            <p>Rate how useful this was for the coaching decision.</p>
+          </div>
+
+          <div class="question-card">
+            <div class="question-head">
+              <h3>Did this improve your decision?</h3>
+              <span class="selected-value">1–5</span>
+            </div>
+
+            <div class="scale-group">
+              <label class="scale-option"><input type="radio" name="coachingValue" value="1" /> <span>1</span></label>
+              <label class="scale-option"><input type="radio" name="coachingValue" value="2" /> <span>2</span></label>
+              <label class="scale-option"><input type="radio" name="coachingValue" value="3" /> <span>3</span></label>
+              <label class="scale-option"><input type="radio" name="coachingValue" value="4" /> <span>4</span></label>
+              <label class="scale-option"><input type="radio" name="coachingValue" value="5" /> <span>5</span></label>
+            </div>
+
+            <div class="scale-labels">
+              <span>No value</span>
+              <span>Useful</span>
+              <span>Very valuable</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- 6. Next-set validation -->
+        <section class="section">
+          <div class="section-heading">
+            <h2>Next-set validation</h2>
+            <p>Was the effect validated on the next set?</p>
+          </div>
+
+          <div class="option-card">
+            <div class="inline-options">
+              <label><input type="radio" name="validatedNextSet" value="1" /> Yes</label>
+              <label><input type="radio" name="validatedNextSet" value="0" /> No</label>
+            </div>
+          </div>
+        </section>
+
+        <!-- 7. Notes -->
+        <section class="section">
+          <div class="section-heading">
+            <h2>Notes</h2>
+            <p>Optional context for follow-up, phrasing, or exceptions.</p>
+          </div>
+
+          <div class="form-grid form-grid-1">
+            <div class="field">
+              <label for="quickScript">Quick script</label>
+              <textarea id="quickScript" name="quickScript" rows="3" placeholder="Short phrasing used by the trainer"></textarea>
+            </div>
+
+            <div class="field">
+              <label for="trainerNotes">Trainer notes</label>
+              <textarea id="trainerNotes" name="trainerNotes" rows="4" placeholder="Context, exceptions, or follow-up"></textarea>
+            </div>
+          </div>
+        </section>
+
+        <!-- 8. Summary -->
+        <section class="section">
+          <div class="section-heading">
+            <h2>Set summary</h2>
+            <p>Live helper summary for this logged set.</p>
+          </div>
+
+          <div class="summary-grid">
+            <article class="summary-card">
+              <span class="summary-label">Capture success</span>
+              <strong>—</strong>
+              <small>Setup successful × data captured</small>
+            </article>
+
+            <article class="summary-card">
+              <span class="summary-label">Observed change score</span>
+              <strong>—</strong>
+              <small>Average of confirmed, revealed, and changed decision</small>
+            </article>
+          </div>
+        </section>
+
+        <!-- 9. Actions -->
+        <section class="section action-row">
+          <button type="submit" class="primary-btn">Record set</button>
+          <button type="button" class="secondary-btn">Save draft</button>
+          <button type="reset" class="ghost-btn">Reset</button>
+        </section>
+      </form>
+    </section>
+  </main>
+
+  <script src="trainer.js"></script>
+</body>
+</html>
