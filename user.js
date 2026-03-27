@@ -1,5 +1,11 @@
 const form = document.getElementById("userForm");
 
+/*
+  Paste your deployed Google Apps Script web app URL here.
+  Example:
+  https://script.google.com/macros/s/XXXXXXXXXXXX/exec
+*/
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbznM9fTzwGMaF4kmDeAhfzq8A0puhkk756ZQKNVIJ2LqXVd4wodIKEWz9tHSHesJqGHAA/exec";
 document.addEventListener("DOMContentLoaded", () => {
   setDefaultDate();
   injectActionIdsIfMissing();
@@ -44,9 +50,9 @@ function bindUserActions() {
   }
 
   if (recordSessionBtn) {
-    recordSessionBtn.addEventListener("click", (event) => {
+    recordSessionBtn.addEventListener("click", async (event) => {
       event.preventDefault();
-      recordSession();
+      await recordSession();
     });
   }
 
@@ -56,6 +62,7 @@ function bindUserActions() {
       setTimeout(() => {
         setDefaultDate();
         updateUserSummary();
+        showPageMessage("Form reset.");
       }, 0);
     });
   }
@@ -76,9 +83,9 @@ function getRadioValue(name) {
 }
 
 function average(values) {
-  if (!values.length) return "—";
+  if (!values.length) return "";
   const total = values.reduce((sum, value) => sum + value, 0);
-  return (total / values.length).toFixed(2);
+  return Number((total / values.length).toFixed(2));
 }
 
 function calculateImmediatePerceivedScore() {
@@ -92,7 +99,7 @@ function calculateImmediatePerceivedScore() {
     .filter((value) => value !== null)
     .map(Number);
 
-  if (values.length !== 5) return "—";
+  if (values.length !== 5) return "";
   return average(values);
 }
 
@@ -105,7 +112,7 @@ function calculateSessionValueScore() {
     .filter((value) => value !== null)
     .map(Number);
 
-  if (values.length !== 3) return "—";
+  if (values.length !== 3) return "";
   return average(values);
 }
 
@@ -115,66 +122,69 @@ function updateUserSummary() {
   if (summaryCards.length >= 1) {
     const perceivedStrong = summaryCards[0].querySelector("strong");
     if (perceivedStrong) {
-      perceivedStrong.textContent = calculateImmediatePerceivedScore();
+      const score = calculateImmediatePerceivedScore();
+      perceivedStrong.textContent = score === "" ? "—" : score.toFixed(2);
     }
   }
 
   if (summaryCards.length >= 2) {
     const valueStrong = summaryCards[1].querySelector("strong");
     if (valueStrong) {
-      valueStrong.textContent = calculateSessionValueScore();
+      const score = calculateSessionValueScore();
+      valueStrong.textContent = score === "" ? "—" : score.toFixed(2);
     }
   }
 }
 
 function collectUserPayload() {
   return {
-    trainerId: document.getElementById("trainerId")?.value.trim() || "",
-    userId: document.getElementById("userId")?.value.trim() || "",
+    sheet: "User_Review",
+
+    timestamp: new Date().toISOString(),
+    trainer_id: document.getElementById("trainerId")?.value.trim() || "",
+    user_id: document.getElementById("userId")?.value.trim() || "",
     date: document.getElementById("reviewDate")?.value || "",
-    primaryDeviceId: document.getElementById("primaryDeviceId")?.value.trim() || "",
-    setsInSession: document.getElementById("setsInSession")?.value || "",
+    primary_device_id: document.getElementById("primaryDeviceId")?.value.trim() || "",
+    sets_in_session: document.getElementById("setsInSession")?.value || "",
 
-    q1ReflectionAccuracy: getRadioValue("q1ReflectionAccuracy"),
-    q2Trust: getRadioValue("q2Trust"),
-    q3TrainingImpact: getRadioValue("q3TrainingImpact"),
-    q4Integration: getRadioValue("q4Integration"),
-    q5Awareness: getRadioValue("q5Awareness"),
+    q1_reflection_accuracy: getRadioValue("q1ReflectionAccuracy"),
+    q2_trust: getRadioValue("q2Trust"),
+    q3_training_impact: getRadioValue("q3TrainingImpact"),
+    q4_integration: getRadioValue("q4Integration"),
+    q5_awareness: getRadioValue("q5Awareness"),
 
-    overallSessionValue: getRadioValue("overallSessionValue"),
-    wouldUseAgain: getRadioValue("wouldUseAgain"),
-    confidenceToApplyAgain: getRadioValue("confidenceToApplyAgain"),
+    overall_session_value: getRadioValue("overallSessionValue"),
+    would_use_again: getRadioValue("wouldUseAgain"),
+    confidence_to_apply_again: getRadioValue("confidenceToApplyAgain"),
 
-    biggestFriction: document.getElementById("biggestFriction")?.value.trim() || "",
-    mostUsefulFeedback: document.getElementById("mostUsefulFeedback")?.value.trim() || "",
-    sessionNotes: document.getElementById("sessionNotes")?.value.trim() || "",
-    privateReview: document.getElementById("privateReview")?.checked ? 1 : 0,
+    biggest_friction: document.getElementById("biggestFriction")?.value.trim() || "",
+    most_useful_feedback: document.getElementById("mostUsefulFeedback")?.value.trim() || "",
+    session_notes: document.getElementById("sessionNotes")?.value.trim() || "",
+    private_review: document.getElementById("privateReview")?.checked ? 1 : 0,
 
-    immediatePerceivedScore: calculateImmediatePerceivedScore(),
-    sessionValueScore: calculateSessionValueScore(),
-
-    savedAt: new Date().toISOString()
+    immediate_perceived_score: calculateImmediatePerceivedScore(),
+    session_value_score: calculateSessionValueScore()
   };
 }
 
 function validateUserForm(payload) {
   const missing = [];
 
-  if (!payload.trainerId) missing.push("Trainer ID");
-  if (!payload.userId) missing.push("User ID");
+  if (!payload.trainer_id) missing.push("Trainer ID");
+  if (!payload.user_id) missing.push("User ID");
   if (!payload.date) missing.push("Date");
-  if (!payload.primaryDeviceId) missing.push("Primary device");
-  if (!payload.setsInSession) missing.push("Sets in session");
+  if (!payload.primary_device_id) missing.push("Primary device");
+  if (!payload.sets_in_session) missing.push("Sets in session");
 
-  if (payload.q1ReflectionAccuracy === null) missing.push("Q1");
-  if (payload.q2Trust === null) missing.push("Q2");
-  if (payload.q3TrainingImpact === null) missing.push("Q3");
-  if (payload.q4Integration === null) missing.push("Q4");
-  if (payload.q5Awareness === null) missing.push("Q5");
+  if (payload.q1_reflection_accuracy === null) missing.push("Q1");
+  if (payload.q2_trust === null) missing.push("Q2");
+  if (payload.q3_training_impact === null) missing.push("Q3");
+  if (payload.q4_integration === null) missing.push("Q4");
+  if (payload.q5_awareness === null) missing.push("Q5");
 
-  if (payload.overallSessionValue === null) missing.push("Overall session value");
-  if (payload.wouldUseAgain === null) missing.push("Would use again");
-  if (payload.confidenceToApplyAgain === null) missing.push("Confidence to apply again");
+  if (payload.overall_session_value === null) missing.push("Overall session value");
+  if (payload.would_use_again === null) missing.push("Would use again");
+  if (payload.confidence_to_apply_again === null) missing.push("Confidence to apply again");
 
   return missing;
 }
@@ -192,36 +202,52 @@ function loadDraft() {
   try {
     const draft = JSON.parse(raw);
 
-    setValue("trainerId", draft.trainerId);
-    setValue("userId", draft.userId);
+    setValue("trainerId", draft.trainer_id);
+    setValue("userId", draft.user_id);
     setValue("reviewDate", draft.date);
-    setValue("primaryDeviceId", draft.primaryDeviceId);
-    setValue("setsInSession", draft.setsInSession);
+    setValue("primaryDeviceId", draft.primary_device_id);
+    setValue("setsInSession", draft.sets_in_session);
 
-    setValue("biggestFriction", draft.biggestFriction);
-    setValue("mostUsefulFeedback", draft.mostUsefulFeedback);
-    setValue("sessionNotes", draft.sessionNotes);
+    setValue("biggestFriction", draft.biggest_friction);
+    setValue("mostUsefulFeedback", draft.most_useful_feedback);
+    setValue("sessionNotes", draft.session_notes);
 
-    setRadioValue("q1ReflectionAccuracy", draft.q1ReflectionAccuracy);
-    setRadioValue("q2Trust", draft.q2Trust);
-    setRadioValue("q3TrainingImpact", draft.q3TrainingImpact);
-    setRadioValue("q4Integration", draft.q4Integration);
-    setRadioValue("q5Awareness", draft.q5Awareness);
+    setRadioValue("q1ReflectionAccuracy", draft.q1_reflection_accuracy);
+    setRadioValue("q2Trust", draft.q2_trust);
+    setRadioValue("q3TrainingImpact", draft.q3_training_impact);
+    setRadioValue("q4Integration", draft.q4_integration);
+    setRadioValue("q5Awareness", draft.q5_awareness);
 
-    setRadioValue("overallSessionValue", draft.overallSessionValue);
-    setRadioValue("wouldUseAgain", draft.wouldUseAgain);
-    setRadioValue("confidenceToApplyAgain", draft.confidenceToApplyAgain);
+    setRadioValue("overallSessionValue", draft.overall_session_value);
+    setRadioValue("wouldUseAgain", draft.would_use_again);
+    setRadioValue("confidenceToApplyAgain", draft.confidence_to_apply_again);
 
-    setCheckboxValue("privateReview", draft.privateReview === 1);
+    setCheckboxValue("privateReview", draft.private_review === 1);
 
     updateUserSummary();
     showPageMessage("Draft loaded.");
   } catch (error) {
     console.error("Failed to load user draft:", error);
+    showPageMessage("Could not load saved draft.");
   }
 }
 
-function recordSession() {
+async function saveUserRowToGoogleSheets(payload) {
+  if (!GOOGLE_SCRIPT_URL || GOOGLE_SCRIPT_URL.includes("PASTE_YOUR_APPS_SCRIPT_URL_HERE")) {
+    throw new Error("Google Apps Script URL is missing.");
+  }
+
+  await fetch(GOOGLE_SCRIPT_URL, {
+    method: "POST",
+    mode: "no-cors",
+    headers: {
+      "Content-Type": "text/plain;charset=utf-8"
+    },
+    body: JSON.stringify(payload)
+  });
+}
+
+async function recordSession() {
   const payload = collectUserPayload();
   const missing = validateUserForm(payload);
 
@@ -230,15 +256,24 @@ function recordSession() {
     return;
   }
 
-  localStorage.setItem("uruzoneUserLastSubmission", JSON.stringify(payload));
-  localStorage.removeItem("uruzoneUserDraft");
+  try {
+    showPageMessage("Recording session...");
 
-  console.log("URUzone User Session Payload:", payload);
-  showPageMessage("Session recorded locally.");
+    await saveUserRowToGoogleSheets(payload);
 
-  form.reset();
-  setDefaultDate();
-  updateUserSummary();
+    localStorage.setItem("uruzoneUserLastSubmission", JSON.stringify(payload));
+    localStorage.removeItem("uruzoneUserDraft");
+
+    console.log("URUzone User Session Payload:", payload);
+    showPageMessage("Session recorded to Google Sheets.");
+
+    form.reset();
+    setDefaultDate();
+    updateUserSummary();
+  } catch (error) {
+    console.error("Failed to save user session:", error);
+    showPageMessage("Failed to save to Google Sheets. Check your script URL and deployment.");
+  }
 }
 
 function setValue(id, value) {

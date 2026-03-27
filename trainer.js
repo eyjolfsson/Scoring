@@ -1,5 +1,11 @@
 const form = document.getElementById("trainerForm");
 
+/*
+  Paste your deployed Google Apps Script web app URL here.
+  Example:
+  https://script.google.com/macros/s/XXXXXXXXXXXX/exec
+*/
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbznM9fTzwGMaF4kmDeAhfzq8A0puhkk756ZQKNVIJ2LqXVd4wodIKEWz9tHSHesJqGHAA/exec";
 document.addEventListener("DOMContentLoaded", () => {
   setDefaultDate();
   injectActionIdsIfMissing();
@@ -44,9 +50,9 @@ function bindTrainerActions() {
   }
 
   if (recordSetBtn) {
-    recordSetBtn.addEventListener("click", (event) => {
+    recordSetBtn.addEventListener("click", async (event) => {
       event.preventDefault();
-      recordSet();
+      await recordSet();
     });
   }
 
@@ -56,6 +62,7 @@ function bindTrainerActions() {
       setTimeout(() => {
         setDefaultDate();
         updateTrainerSummary();
+        showPageMessage("Form reset.");
       }, 0);
     });
   }
@@ -91,7 +98,7 @@ function calculateCaptureSuccess() {
   const dataCaptured = getRadioValue("dataCaptured");
 
   if (setupSuccessful === null || dataCaptured === null) {
-    return "—";
+    return "";
   }
 
   return Number(setupSuccessful) * Number(dataCaptured);
@@ -105,7 +112,7 @@ function calculateObservedChangeScore() {
   ];
 
   const score = values.reduce((sum, value) => sum + value, 0) / values.length;
-  return score.toFixed(2);
+  return Number(score.toFixed(2));
 }
 
 function updateTrainerSummary() {
@@ -114,68 +121,72 @@ function updateTrainerSummary() {
   if (summaryCards.length >= 1) {
     const captureStrong = summaryCards[0].querySelector("strong");
     if (captureStrong) {
-      captureStrong.textContent = calculateCaptureSuccess();
+      const capture = calculateCaptureSuccess();
+      captureStrong.textContent = capture === "" ? "—" : capture;
     }
   }
 
   if (summaryCards.length >= 2) {
     const observedStrong = summaryCards[1].querySelector("strong");
     if (observedStrong) {
-      observedStrong.textContent = calculateObservedChangeScore();
+      observedStrong.textContent = calculateObservedChangeScore().toFixed(2);
     }
   }
 }
 
 function collectTrainerPayload() {
+  const decisionChangeValues = getCheckedDecisionChanges();
+
   return {
-    trainerId: document.getElementById("trainerId")?.value.trim() || "",
-    userId: document.getElementById("userId")?.value.trim() || "",
-    sessionNumber: document.getElementById("sessionNumber")?.value || "",
+    sheet: "Trainer_Log",
+
+    timestamp: new Date().toISOString(),
+    trainer_id: document.getElementById("trainerId")?.value.trim() || "",
+    user_id: document.getElementById("userId")?.value.trim() || "",
+    session_number: document.getElementById("sessionNumber")?.value || "",
     date: document.getElementById("sessionDate")?.value || "",
-    deviceId: document.getElementById("deviceId")?.value.trim() || "",
+    device_id: document.getElementById("deviceId")?.value.trim() || "",
     exercise: document.getElementById("exercise")?.value.trim() || "",
-    loadKg: document.getElementById("loadKg")?.value || "",
+    load_kg: document.getElementById("loadKg")?.value || "",
     reps: document.getElementById("reps")?.value || "",
 
-    setupSuccessful: getRadioValue("setupSuccessful"),
-    dataCaptured: getRadioValue("dataCaptured"),
-    technicalIssue: getRadioValue("technicalIssue"),
-    issueCategory: document.getElementById("issueCategory")?.value.trim() || "",
+    setup_successful: getRadioValue("setupSuccessful"),
+    data_captured: getRadioValue("dataCaptured"),
+    technical_issue: getRadioValue("technicalIssue"),
+    issue_category: document.getElementById("issueCategory")?.value.trim() || "",
 
-    confirmedObservation: getCheckboxValue("confirmedObservation") ? 1 : 0,
-    revealedSomethingNew: getCheckboxValue("revealedSomethingNew") ? 1 : 0,
-    behaviorChange: getCheckboxValue("behaviorChange") ? 1 : 0,
-    decisionChange: getCheckedDecisionChanges(),
+    confirmed_observation: getCheckboxValue("confirmedObservation") ? 1 : 0,
+    revealed_something_new: getCheckboxValue("revealedSomethingNew") ? 1 : 0,
+    behavior_change: getCheckboxValue("behaviorChange") ? 1 : 0,
+    decision_change: decisionChangeValues.join(", "),
 
-    coachingValue: getRadioValue("coachingValue"),
-    validatedNextSet: getRadioValue("validatedNextSet"),
+    coaching_value: getRadioValue("coachingValue"),
+    validated_next_set: getRadioValue("validatedNextSet"),
 
-    quickScript: document.getElementById("quickScript")?.value.trim() || "",
-    trainerNotes: document.getElementById("trainerNotes")?.value.trim() || "",
+    capture_success: calculateCaptureSuccess(),
+    observed_change_score: calculateObservedChangeScore(),
 
-    captureSuccess: calculateCaptureSuccess(),
-    observedChangeScore: calculateObservedChangeScore(),
-
-    savedAt: new Date().toISOString()
+    quick_script: document.getElementById("quickScript")?.value.trim() || "",
+    trainer_notes: document.getElementById("trainerNotes")?.value.trim() || ""
   };
 }
 
 function validateTrainerForm(payload) {
   const missing = [];
 
-  if (!payload.trainerId) missing.push("Trainer ID");
-  if (!payload.userId) missing.push("User ID");
-  if (!payload.sessionNumber) missing.push("Session number");
+  if (!payload.trainer_id) missing.push("Trainer ID");
+  if (!payload.user_id) missing.push("User ID");
+  if (!payload.session_number) missing.push("Session number");
   if (!payload.date) missing.push("Date");
-  if (!payload.deviceId) missing.push("Device ID");
+  if (!payload.device_id) missing.push("Device ID");
   if (!payload.exercise) missing.push("Exercise");
-  if (payload.loadKg === "") missing.push("Load");
+  if (payload.load_kg === "") missing.push("Load");
   if (!payload.reps) missing.push("Reps");
-  if (payload.setupSuccessful === null) missing.push("Setup successful");
-  if (payload.dataCaptured === null) missing.push("Data captured");
-  if (payload.technicalIssue === null) missing.push("Technical issue");
-  if (payload.coachingValue === null) missing.push("Coaching value");
-  if (payload.validatedNextSet === null) missing.push("Next-set validation");
+  if (payload.setup_successful === null) missing.push("Setup successful");
+  if (payload.data_captured === null) missing.push("Data captured");
+  if (payload.technical_issue === null) missing.push("Technical issue");
+  if (payload.coaching_value === null) missing.push("Coaching value");
+  if (payload.validated_next_set === null) missing.push("Next-set validation");
 
   return missing;
 }
@@ -193,30 +204,31 @@ function loadDraft() {
   try {
     const draft = JSON.parse(raw);
 
-    setValue("trainerId", draft.trainerId);
-    setValue("userId", draft.userId);
-    setValue("sessionNumber", draft.sessionNumber);
+    setValue("trainerId", draft.trainer_id);
+    setValue("userId", draft.user_id);
+    setValue("sessionNumber", draft.session_number);
     setValue("sessionDate", draft.date);
-    setValue("deviceId", draft.deviceId);
+    setValue("deviceId", draft.device_id);
     setValue("exercise", draft.exercise);
-    setValue("loadKg", draft.loadKg);
+    setValue("loadKg", draft.load_kg);
     setValue("reps", draft.reps);
-    setValue("issueCategory", draft.issueCategory);
-    setValue("quickScript", draft.quickScript);
-    setValue("trainerNotes", draft.trainerNotes);
+    setValue("issueCategory", draft.issue_category);
+    setValue("quickScript", draft.quick_script);
+    setValue("trainerNotes", draft.trainer_notes);
 
-    setRadioValue("setupSuccessful", draft.setupSuccessful);
-    setRadioValue("dataCaptured", draft.dataCaptured);
-    setRadioValue("technicalIssue", draft.technicalIssue);
-    setRadioValue("coachingValue", draft.coachingValue);
-    setRadioValue("validatedNextSet", draft.validatedNextSet);
+    setRadioValue("setupSuccessful", draft.setup_successful);
+    setRadioValue("dataCaptured", draft.data_captured);
+    setRadioValue("technicalIssue", draft.technical_issue);
+    setRadioValue("coachingValue", draft.coaching_value);
+    setRadioValue("validatedNextSet", draft.validated_next_set);
 
-    setCheckboxValue("confirmedObservation", draft.confirmedObservation === 1);
-    setCheckboxValue("revealedSomethingNew", draft.revealedSomethingNew === 1);
-    setCheckboxValue("behaviorChange", draft.behaviorChange === 1);
+    setCheckboxValue("confirmedObservation", draft.confirmed_observation === 1);
+    setCheckboxValue("revealedSomethingNew", draft.revealed_something_new === 1);
+    setCheckboxValue("behaviorChange", draft.behavior_change === 1);
 
-    if (Array.isArray(draft.decisionChange)) {
-      draft.decisionChange.forEach((value) => {
+    if (typeof draft.decision_change === "string" && draft.decision_change.trim()) {
+      const values = draft.decision_change.split(",").map((v) => v.trim());
+      values.forEach((value) => {
         const input = document.querySelector(`input[name="decisionChange"][value="${value}"]`);
         if (input) input.checked = true;
       });
@@ -226,10 +238,26 @@ function loadDraft() {
     showPageMessage("Draft loaded.");
   } catch (error) {
     console.error("Failed to load trainer draft:", error);
+    showPageMessage("Could not load saved draft.");
   }
 }
 
-function recordSet() {
+async function saveTrainerRowToGoogleSheets(payload) {
+  if (!GOOGLE_SCRIPT_URL || GOOGLE_SCRIPT_URL.includes("PASTE_YOUR_APPS_SCRIPT_URL_HERE")) {
+    throw new Error("Google Apps Script URL is missing.");
+  }
+
+  await fetch(GOOGLE_SCRIPT_URL, {
+    method: "POST",
+    mode: "no-cors",
+    headers: {
+      "Content-Type": "text/plain;charset=utf-8"
+    },
+    body: JSON.stringify(payload)
+  });
+}
+
+async function recordSet() {
   const payload = collectTrainerPayload();
   const missing = validateTrainerForm(payload);
 
@@ -238,15 +266,24 @@ function recordSet() {
     return;
   }
 
-  localStorage.setItem("uruzoneTrainerLastSubmission", JSON.stringify(payload));
-  localStorage.removeItem("uruzoneTrainerDraft");
+  try {
+    showPageMessage("Recording set...");
 
-  console.log("URUzone Trainer Set Payload:", payload);
-  showPageMessage("Set recorded locally.");
+    await saveTrainerRowToGoogleSheets(payload);
 
-  form.reset();
-  setDefaultDate();
-  updateTrainerSummary();
+    localStorage.setItem("uruzoneTrainerLastSubmission", JSON.stringify(payload));
+    localStorage.removeItem("uruzoneTrainerDraft");
+
+    console.log("URUzone Trainer Set Payload:", payload);
+    showPageMessage("Set recorded to Google Sheets.");
+
+    form.reset();
+    setDefaultDate();
+    updateTrainerSummary();
+  } catch (error) {
+    console.error("Failed to save trainer set:", error);
+    showPageMessage("Failed to save to Google Sheets. Check your script URL and deployment.");
+  }
 }
 
 function setValue(id, value) {
